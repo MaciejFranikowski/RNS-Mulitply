@@ -1,10 +1,16 @@
 multiply (first_number, second_number) = 
 {
 
-	my(Rf = 1, first_17_primes = primes(17), first_machine_val = first_number, second_machine_val = second_number);
+	my(Rf = 1, first_18_primes = primes(18),
+	first_machine_val = first_number, 
+	second_machine_val = second_number,
+	first_val_RNS = vector(18),
+	second_val_RNS = vector(18)
+	);
 	
+	print(first_18_primes);
 	for( i = 1, 7,
-	Rf = Rf * first_17_primes[i]);
+	Rf = Rf * first_18_primes[i]);
 	print("Rf: " Rf);
 
 	first_machine_val = first_machine_val * Rf;
@@ -13,7 +19,12 @@ multiply (first_number, second_number) =
 	second_machine_val = second_machine_val * Rf;
 	print("Second machine val: "second_machine_val);
 	
-	
+	for( i = 1, 18,
+	first_val_RNS[i] = Mod(first_machine_val, first_18_primes[i]);
+	second_val_RNS[i] = Mod(second_machine_val, first_18_primes[i]);
+	);
+	print(first_val_RNS);
+	print(second_val_RNS);
 
 }
 
