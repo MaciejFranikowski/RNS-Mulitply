@@ -1,0 +1,7 @@
+1. Każdą liczbę do mnozenia, pomnożyć razy Rf (zakres częsci ułamkowej)
+
+2. Wykonać operacje modulo na wyniku dla obu liczb, przy pomocy klucza i uzyskać wartość w RNS.
+
+3. Pomnozyć normalnie liczby w RNS, każdy wynik ponownie modulo z bazy.
+
+4. Konwersja na MRN, przy użyciu algorytmu. Wybrać która  

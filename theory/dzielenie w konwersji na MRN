@@ -1,0 +1,3 @@
+Konwersja na MRN
+
+W kroku dzielenia przez M[i] należy do liczby, która nie dzieli się przez M[i], dodać tyle razy jej (tej liczby, co się nie dzieli) M, aż będzie podzielna przez M[i].
