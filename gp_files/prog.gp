@@ -36,6 +36,114 @@ multiply (first_number, second_number) =
 	);
 	
 	print("\nProduct of numbers in RNS: "product_RNS);
+	
+	
+	a = convert_RNS_to_MRN(product_RNS);
+	print(a);
+	
 }
 
+convert_RNS_to_MRN(vector_RNS) = 
+{
+	my(skipped_Mods = vector(18),
+	lifo = vector(36),
+	i = 1
+	);
+	
+	\\ Main loop, runs until the given RNS vector contains nothing but 0's
+	while(1 == 1,
+	print("\nLifo" , lifo);
+	print("\nVector", vector_RNS);
+	\\ M[i] skipped? If == 0 (not skipped ->  continue algo)  else   (skipped -> increment i)
+	print("\nHow many in  vector skipped: ", how_many_in_vector(skipped_Mods, vector_RNS[i].mod)," i: ", i);
+	print("\nCurrent mod:", vector_RNS[i].mod);
+	print("\nSkipped_Mods: ", skipped_Mods);
+	if(how_many_in_vector(skipped_Mods, vector_RNS[i].mod) == 0,
+	
+	\\ Push d[i] to Lifo, lift exctacts the value from intMod
+	lifo = vector_push(lifo, lift(vector_RNS[i]));
 
+	\\ is d[i] == 0? if yes, dont do anything, else subtract d[i] from vector_RNS[i]
+	\\ The function calls can only pass arguments as values, so we have to assign the return
+	\\ value of subtract_from_vector, otherwise nothing changes.
+	if(lift(vector_RNS[i]) != 0, vector_RNS = subtract_from_vector(vector_RNS, lift(vector_RNS[i]), i) );
+	
+	\\ Main exit condition, vector_RNS containing nothing but 0's
+	if(how_many_in_vector(vector_RNS, 0) == 18, break;);
+	print("Is vector equal: ", how_many_in_vector(vector_RNS, 0));
+	
+	
+	\\ Add current Mod to skipped Mods
+	skipped_Mods[i] = vector_RNS[i].mod;
+	\\ Besides adding it co skipped mods, zero it's value
+	\\ Zeroing vector_RNS[i], because it's skipped and we use that info for exiting the func.
+	vector_RNS[i] = Mod(0, vector_RNS[i].mod);
+
+	\\ Divide A (vector_RNS) by Mi, aka the mod of the current [i]
+	vector_RNS = divide_By_Mi(vector_RNS, vector_RNS[i].mod);
+
+	lifo = vector_push(lifo, vector_RNS[i].mod);
+
+
+	);
+	
+	i = i + 1
+	);
+	printf("LIFO IN THE END BOIIII:" lifo);
+	lifo;
+}
+
+\\ Returns the number of how many times a value appears in the vector.
+how_many_in_vector(tab,  value) =
+{
+	my(x = 0);
+	
+	for (i = 1, length(tab),
+	if(lift(tab[i]) == value, x = x + 1 ));
+	
+	x;
+
+}
+
+subtract_from_vector(tab, value, from) =
+{	
+	\\my(x = vector(length(tab)));
+	\\ from to not create chaos on early position of vector
+	print("Vector RNS before subtracting:", tab);
+	for (i = from, length(tab),
+	tab[i] = tab[i] - value);
+	\\tab[i] = Mod(lift(tab[i]) - value, value));
+	print("Vector RNS after subtracting:", tab);
+	tab;
+	
+}
+
+divide_By_Mi(tab, value)  = 
+{
+	my(x);
+	print("dividing by: "value);
+
+	for(i = 1, length(tab),
+	print("Tab[",i,"] before change: "tab[i]);
+	\\ If the tab[i] can't be divided by value, add to it the modulo of that value
+	\\ DOESNT WORK? WHY, NOT NEEDED?
+	\\while(Mod(tab[i], value) != 0,
+	\\print("tab[i] during change: "tab[i]);
+	\\tab[i] = tab[i] + tab[i].mod);
+	
+	\\ Finally divide the tab[i] by the value
+	\\ APPARENTLY THIS IS ENOUGH???
+	tab[i] = Mod(lift(tab[i]) / value, tab[i].mod);
+	print("Tab[i] after change:" tab[i]);
+	);
+	tab;
+
+}
+
+vector_push(tab, value) = 
+{
+	for( i = 1, length(tab) - 1,
+	tab[length(tab) - i + 1] =  tab[length(tab) - i]);
+	tab[1] = value;
+	tab;
+}
