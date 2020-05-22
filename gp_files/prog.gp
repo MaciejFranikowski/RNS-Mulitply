@@ -38,9 +38,63 @@ multiply (first_number, second_number) =
 	print("\nProduct of numbers in RNS: "product_RNS);
 	
 	
-	a = convert_RNS_to_MRN(product_RNS);
-	print(a);
+	a = convert_RNS_to_MRN_INTMODS(product_RNS);
 	
+	
+}
+
+convert_RNS_to_MRN_INTMODS(vector_RNS) = 
+{
+	my(skipped_Mods = vector(18),
+	lifo = vector(36),
+	i = 1
+	);
+	
+	\\ Main loop, runs until the given RNS vector contains nothing but 0's
+	while(1 == 1,
+	print("\nLifo" , lifo);
+	print("\nVector", vector_RNS);
+	\\ M[i] skipped? If == 0 (not skipped ->  continue algo)  else   (skipped -> increment i)
+	print("\nHow many in  vector skipped: ", how_many_in_vector(skipped_Mods, vector_RNS[i].mod)," i: ", i);
+	print("\nCurrent mod:", vector_RNS[i].mod);
+	print("\nSkipped_Mods: ", skipped_Mods);
+	if(how_many_in_vector(skipped_Mods, vector_RNS[i].mod) == 0,
+	
+	\\ DIFFERENCE BETWEEN CONVERSION ALGORYTMS
+	\\ Push d[i] to Lifo
+	lifo = vector_push(lifo, vector_RNS[i]);
+
+	\\ is d[i] == 0? if yes, dont do anything, else subtract d[i] from vector_RNS[i]
+	\\ The function calls can only pass arguments as values, so we have to assign the return
+	\\ value of subtract_from_vector, otherwise nothing changes.
+	if(lift(vector_RNS[i]) != 0, vector_RNS = subtract_from_vector(vector_RNS, lift(vector_RNS[i]), i));
+	
+	\\ Main exit condition, vector_RNS containing nothing but 0's
+	if(how_many_in_vector(vector_RNS, 0) == 18, break;);
+	print("Is vector equal: ", how_many_in_vector(vector_RNS, 0));
+	
+	
+	\\ Add current Mod to skipped Mods
+	 skipped_Mods[i] = vector_RNS[i].mod;
+	
+	
+	\\ Besides adding it co skipped mods, zero it's value
+	\\ Zeroing vector_RNS[i], because it's skipped and we use that info for exiting the func.
+	\\ vector_RNS[i] = Mod(0, vector_RNS[i].mod);
+
+	\\ Divide A (vector_RNS) by Mi, aka the mod of the current [i]
+	vector_RNS = divide_By_Mi(vector_RNS, vector_RNS[i].mod);
+	
+	\\ DIFFERENCE BETWEEN CONVERSION ALGORYTMS
+	\\ lifo = vector_push(lifo, vector_RNS[i].mod);
+
+
+	);
+	
+	i = i + 1
+	);
+	printf("LIFO IN THE END BOIIII:" lifo);
+	lifo;
 }
 
 convert_RNS_to_MRN(vector_RNS) = 
@@ -66,7 +120,7 @@ convert_RNS_to_MRN(vector_RNS) =
 	\\ is d[i] == 0? if yes, dont do anything, else subtract d[i] from vector_RNS[i]
 	\\ The function calls can only pass arguments as values, so we have to assign the return
 	\\ value of subtract_from_vector, otherwise nothing changes.
-	if(lift(vector_RNS[i]) != 0, vector_RNS = subtract_from_vector(vector_RNS, lift(vector_RNS[i]), i) );
+	if(lift(vector_RNS[i]) != 0, vector_RNS = subtract_from_vector(vector_RNS, lift(vector_RNS[i]), i));
 	
 	\\ Main exit condition, vector_RNS containing nothing but 0's
 	if(how_many_in_vector(vector_RNS, 0) == 18, break;);
@@ -75,9 +129,11 @@ convert_RNS_to_MRN(vector_RNS) =
 	
 	\\ Add current Mod to skipped Mods
 	skipped_Mods[i] = vector_RNS[i].mod;
+	
+	
 	\\ Besides adding it co skipped mods, zero it's value
 	\\ Zeroing vector_RNS[i], because it's skipped and we use that info for exiting the func.
-	vector_RNS[i] = Mod(0, vector_RNS[i].mod);
+	\\ vector_RNS[i] = Mod(0, vector_RNS[i].mod);
 
 	\\ Divide A (vector_RNS) by Mi, aka the mod of the current [i]
 	vector_RNS = divide_By_Mi(vector_RNS, vector_RNS[i].mod);
@@ -120,8 +176,8 @@ subtract_from_vector(tab, value, from) =
 
 divide_By_Mi(tab, value)  = 
 {
-	my(x);
-	print("dividing by: "value);
+	
+	\\print("dividing by: "value);
 
 	for(i = 1, length(tab),
 	print("Tab[",i,"] before change: "tab[i]);
