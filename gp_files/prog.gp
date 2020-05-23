@@ -38,7 +38,8 @@ multiply (first_number, second_number) =
 	print("\nProduct of numbers in RNS: "product_RNS);
 	
 	
-	a = convert_RNS_to_MRN_INTMODS(product_RNS);
+	lifo = convert_RNS_to_MRN(product_RNS);
+	lifo_conversion = convert_MRN_to_RNS(lifo, product_RNS);
 	
 	
 }
@@ -202,4 +203,60 @@ vector_push(tab, value) =
 	tab[length(tab) - i + 1] =  tab[length(tab) - i]);
 	tab[1] = value;
 	tab;
+}
+
+convert_MRN_to_RNS(lifo, vector_RNS) = 
+{
+	print("\n\n\n", lifo);
+	lifo_end = 0;
+	
+	i = 2;
+
+	while( i + 13 <= length(lifo),	
+		if( lifo[i] == 17 && lifo[i+1] == 0 &&
+			lifo[i+2] == 13 &&
+			lifo[i+4] == 11 &&
+			lifo[i+6] == 7 &&
+			lifo[i+8] == 5 &&
+			lifo[i+10] == 3 &&
+			lifo[i+12] == 2 ,
+			lifo_end = i;
+		);
+	i = i + 2;
+	);
+
+	print("Lifo end: ",lifo_end);
+	result = vector(length(vector_RNS)); 
+
+	for(i = 1, length(result),
+		result[i] = Mod(0, vector_RNS[i].mod);
+	);
+	
+	print("result: ", result);
+
+	
+	j = 1;
+	for(k = 1, lifo_end/2,
+		print(lifo[j]);
+		\\ Add
+		for(i = 1, length(result),
+			result[i] = Mod(lift(result[i]) + lifo[j], result[i].mod);
+			
+		);
+		j= j + 1;
+		print("\n Result after adding: ", result);
+
+		print(lifo[j]);
+		if(k != lifo_end/2,
+			\\ Mul
+			for(i = 1, length(result),
+				result[i] = Mod(lift(result[i]) * lifo[j], result[i].mod);
+				
+			);
+		);
+		j= j + 1;
+		print("\nResult after multiplying: ", result);
+	);
+
+
 }
