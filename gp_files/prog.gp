@@ -213,7 +213,7 @@ convert_MRN_to_RNS(lifo, vector_RNS) =
 	i = 2;
 
 	while( i + 13 <= length(lifo),	
-		if( lifo[i] == 17 && lifo[i+1] == 0 &&
+		if( lifo[i] == 17 &&
 			lifo[i+2] == 13 &&
 			lifo[i+4] == 11 &&
 			lifo[i+6] == 7 &&
