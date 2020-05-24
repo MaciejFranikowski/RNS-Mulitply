@@ -4,4 +4,8 @@
 
 3. Pomnozyć normalnie liczby w RNS, każdy wynik ponownie modulo z bazy.
 
-4. Konwersja na MRN, przy użyciu algorytmu. Wybrać która  
+4. Konwersja na MRN, przy użyciu algorytmu. 
+
+5. Konwersja z MRN na RNS obcinając N (liczbę cyfr fractional).
+
+6. Wyświetl rezultat.
