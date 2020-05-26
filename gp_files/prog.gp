@@ -1,12 +1,12 @@
 multiply (first_number, second_number) = 
 {
 	\\ Create necessary local variables.
-	my(Rf = 1, first_18_primes = primes(18),
+	my(Rf = 1, first_15_primes = primes(15),
 	first_machine_val = first_number, 
 	second_machine_val = second_number,
-	first_val_RNS = vector(18),
-	second_val_RNS = vector(18),
-	product_RNS = vector(18)
+	first_val_RNS = vector(15),
+	second_val_RNS = vector(15),
+	product_RNS = vector(15)
 	);
 	
 	\\ Calcualte the Rf value, based on the first 7 prime numbers.
@@ -21,15 +21,15 @@ multiply (first_number, second_number) =
 	print("Second machine val: "second_machine_val);
 	
 	\\ Calculate RNS values using IntMods from PARI.
-	for( i = 1, 18,
-	first_val_RNS[i] = Mod(first_machine_val, first_18_primes[i]);
-	second_val_RNS[i] = Mod(second_machine_val, first_18_primes[i]);
+	for( i = 1, 15,
+	first_val_RNS[i] = Mod(first_machine_val, first_15_primes[i]);
+	second_val_RNS[i] = Mod(second_machine_val, first_15_primes[i]);
 	);
 	print("\nFirst number in RNS:  "first_val_RNS);
 	print("Second number in RNS: "second_val_RNS);
 
 	\\ Calcuate the product of the RNS numbers.
-	for( i = 1, 18,
+	for( i = 1, 15,
 	product_RNS[i] = first_val_RNS[i] * second_val_RNS[i];
 	);
 	print("\nProduct of numbers in RNS: "product_RNS);
@@ -46,8 +46,8 @@ multiply (first_number, second_number) =
 convert_RNS_to_MRN(vector_RNS) = 
 {
 	\\ Create local variables.
-	my(skipped_Mods = vector(18),
-	lifo = vector(36),
+	my(skipped_Mods = vector(15),
+	lifo = vector(30),
 	i = 1
 	);
 	
@@ -66,7 +66,7 @@ convert_RNS_to_MRN(vector_RNS) =
 	if(lift(vector_RNS[i]) != 0, vector_RNS = subtract_from_vector(vector_RNS, lift(vector_RNS[i]), i));
 	
 	\\ Main exit condition, vector_RNS containing nothing but 0's
-	if(how_many_in_vector(vector_RNS, 0) == 18, break;);
+	if(how_many_in_vector(vector_RNS, 0) == 15, break;);
 	
 	\\ Add current Mod to skipped Mods.
 	skipped_Mods[i] = vector_RNS[i].mod;
