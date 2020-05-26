@@ -8,10 +8,10 @@ multiply (first_number, second_number) =
 	second_val_RNS = vector(15),
 	product_RNS = vector(15)
 	);
-	
+	print(first_15_primes);
 	\\ Calcualte the Rf value, based on the first 7 prime numbers.
 	for( i = 1, 7,
-	Rf = Rf * first_18_primes[i]);
+	Rf = Rf * first_15_primes[i]);
 	print("Rf: " Rf);
 
 	\\ Calcualte the machine values of given numbers.
@@ -63,17 +63,19 @@ convert_RNS_to_MRN(vector_RNS) =
 	\\ Is value[i] == 0? if yes, dont do anything, else subtract value[i] from vector_RNS[i].
 	\\ The function calls can only pass arguments as values, so we have to assign the return
 	\\ value of subtract_from_vector, otherwise nothing changes.
+	print("Before subtraction:        ", vector_RNS, "by " lift(vector_RNS[i]));
 	if(lift(vector_RNS[i]) != 0, vector_RNS = subtract_from_vector(vector_RNS, lift(vector_RNS[i]), i));
-	
+	print("After sutraction ", vector_RNS); 
 	\\ Main exit condition, vector_RNS containing nothing but 0's
 	if(how_many_in_vector(vector_RNS, 0) == 15, break;);
 	
 	\\ Add current Mod to skipped Mods.
 	skipped_Mods[i] = vector_RNS[i].mod;
-
+	
+	print("Before divide:        ", vector_RNS);
 	\\ Divide A (vector_RNS) by Mod[i]
 	vector_RNS = divide_By_Mi(vector_RNS, vector_RNS[i].mod);
-
+	print("After divide by ", vector_RNS[i].mod, " is  ", vector_RNS "\n\n\n"); 
 	lifo = vector_push(lifo, vector_RNS[i].mod);
 
 
